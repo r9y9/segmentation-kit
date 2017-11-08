@@ -31,7 +31,7 @@ use File::Basename 'fileparse';
 #### configuration
 
 ## data directory
-$datadir = "./wav";
+$datadir = $ARGV[0];
 
 ## set to 1 to disable inserting silence at begin/end of sentence
 $disable_silence_at_ends=0;
@@ -46,7 +46,7 @@ $debug_flag=0;
 if ($^O =~ /MSWin/){
     $juliusbin=".\\bin\\julius-4.3.1.exe";
 } else {
-    $juliusbin="./bin/julius-4.3.1";
+    $juliusbin="/usr/local/bin/julius";
 }
 
 ## acoustic model
@@ -97,6 +97,13 @@ foreach $f (@files) {
     }
     close(TRANS);
     $num = $#words;
+
+    if (-f "$f.lab") {
+        $filesize = -s "$f.lab";
+        if ($filesize > 0) {
+            next;
+        }
+    }
 
     # generate dfa and dict for Julius
     unlink("$f.dfa") if (-r "$f.dfa");
@@ -187,9 +194,14 @@ sub yomi2voca {
     s/う゛ぇ/ b e/g;
     s/う゛ぉ/ b o/g;
     s/う゛ゅ/ by u/g;
+    s/ゔゅ/ by u/g;
+    s/ゔぇ/ b e/g;
 
 # 2文字からなる変換規則
     s/ぅ゛/ b u/g;
+    s/うゃ/ u y a/g;
+    s/うょ/ u y o/g;
+    s/ゔゃ/ b y a/g;
 
     s/あぁ/ a a/g;
     s/いぃ/ i i/g;
@@ -306,7 +318,7 @@ sub yomi2voca {
     s/ろぉ/ r o:/g;
     s/わぁ/ w a:/g;
     s/をぉ/ o:/g;
-    
+
     s/う゛/ b u/g;
     s/でぃ/ d i/g;
     s/でぇ/ d e:/g;
@@ -391,6 +403,8 @@ sub yomi2voca {
     s/ふぉ/ f o/g;
 
 # 1音からなる変換規則
+    s/ゔ/ b u/g;
+
     s/あ/ a/g;
     s/い/ i/g;
     s/う/ u/g;
@@ -487,4 +501,3 @@ sub yomi2voca {
 
     return $_;
 }
-    
