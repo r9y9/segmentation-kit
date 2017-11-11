@@ -1,10 +1,7 @@
+# coding: utf-8
+
 import numpy as np
 import os
-from nnmnkwii.datasets import jsut
-
-import librosa
-import librosa.display
-from matplotlib import pyplot as plt
 import MeCab
 import jaconv
 
@@ -19,16 +16,14 @@ def hasNumbers(inputString):
 
 
 if __name__ == "__main__":
-    in_dir = "/home/ryuichi/data/jsut_ver1"
+    from params import in_dir, dst_dir
+
     transcriptions = jsut.TranscriptionDataSource(
         in_dir, subsets=jsut.available_subsets).collect_files()
     wav_paths = jsut.WavFileDataSource(
         in_dir, subsets=jsut.available_subsets).collect_files()
 
-    dst_dir = "jsut"
-
     c = 0
-    tagger = MeCab.Tagger("-Oyomi")
     os.makedirs(dst_dir, exist_ok=True)
     for idx, (text, wav_path) in enumerate(zip(transcriptions, wav_paths)):
         name = splitext(basename(wav_path))[0]
@@ -41,4 +36,4 @@ if __name__ == "__main__":
                     print(idx, label_path, text, ff.readlines())
                 c += 1
 
-    print(c)
+    print("Failed number of utterances:", c)

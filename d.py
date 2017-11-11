@@ -1,3 +1,5 @@
+# coding: utf-8
+
 import numpy as np
 import os
 from nnmnkwii.datasets import jsut
@@ -20,13 +22,12 @@ def wavesurfer_to_hts(lab_path):
 
 
 if __name__ == "__main__":
-    in_dir = "/home/ryuichi/data/jsut_ver1"
+    from params import in_dir, dst_dir
     transcriptions = jsut.TranscriptionDataSource(
         in_dir, subsets=jsut.available_subsets).collect_files()
     wav_paths = jsut.WavFileDataSource(
         in_dir, subsets=jsut.available_subsets).collect_files()
 
-    lab_dir = "jsut"
     for subset in jsut.available_subsets:
         wav_paths = jsut.WavFileDataSource(in_dir, subsets=[subset]).collect_files()
         dst_dir = join(in_dir, subset, "lab")
@@ -34,7 +35,7 @@ if __name__ == "__main__":
         for idx in trange(len(wav_paths)):
             wav_path = wav_paths[idx]
             name = splitext(basename(wav_path))[0]
-            lab_path = join(lab_dir, name + ".lab")
+            lab_path = join(dst_dir, name + ".lab")
             if not exists(lab_path):
                 continue
             dst_path = join(dst_dir, name + ".lab")

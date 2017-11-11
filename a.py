@@ -1,13 +1,11 @@
+# coding: utf-8
+
+"""読みを推定する"""
+
 import numpy as np
 import os
-from nnmnkwii.datasets import jsut
-
-import librosa
-import librosa.display
-from matplotlib import pyplot as plt
 import MeCab
 import jaconv
-
 from nnmnkwii.datasets import jsut
 from os.path import join, splitext, basename
 from tqdm import trange
@@ -18,13 +16,12 @@ def hasNumbers(inputString):
 
 
 if __name__ == "__main__":
-    in_dir = "/home/ryuichi/data/jsut_ver1"
+    from params import in_dir, dst_dir
+
     transcriptions = jsut.TranscriptionDataSource(
         in_dir, subsets=jsut.available_subsets).collect_files()
     wav_paths = jsut.WavFileDataSource(
         in_dir, subsets=jsut.available_subsets).collect_files()
-
-    dst_dir = "jsut"
 
     err = 0
     tagger = MeCab.Tagger("-Oyomi")
