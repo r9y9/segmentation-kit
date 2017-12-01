@@ -30,15 +30,15 @@ if __name__ == "__main__":
 
     for subset in jsut.available_subsets:
         wav_paths = jsut.WavFileDataSource(in_dir, subsets=[subset]).collect_files()
-        dst_dir = join(in_dir, subset, "lab")
-        os.makedirs(dst_dir, exist_ok=True)
+        save_dir = join(in_dir, subset, "lab")
+        os.makedirs(save_dir, exist_ok=True)
         for idx in trange(len(wav_paths)):
             wav_path = wav_paths[idx]
             name = splitext(basename(wav_path))[0]
             lab_path = join(dst_dir, name + ".lab")
             if not exists(lab_path):
                 continue
-            dst_path = join(dst_dir, name + ".lab")
+            dst_path = join(save_dir, name + ".lab")
             # segment_julius outpus 0-sized label if error happens
             filesize = os.stat(lab_path).st_size
             if filesize > 0:
