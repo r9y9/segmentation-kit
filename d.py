@@ -22,11 +22,12 @@ def wavesurfer_to_hts(lab_path):
 
 
 if __name__ == "__main__":
-    from params import in_dir, dst_dir
+    from params import in_dir, dst_dir, subsets
+
     transcriptions = jsut.TranscriptionDataSource(
-        in_dir, subsets=jsut.available_subsets).collect_files()
+        in_dir, subsets=subsets).collect_files()
     wav_paths = jsut.WavFileDataSource(
-        in_dir, subsets=jsut.available_subsets).collect_files()
+        in_dir, subsets=subsets).collect_files()
 
     for subset in jsut.available_subsets:
         wav_paths = jsut.WavFileDataSource(in_dir, subsets=[subset]).collect_files()

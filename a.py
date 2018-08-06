@@ -16,12 +16,12 @@ def hasNumbers(inputString):
 
 
 if __name__ == "__main__":
-    from params import in_dir, dst_dir
+    from params import in_dir, dst_dir, subsets
 
     transcriptions = jsut.TranscriptionDataSource(
-        in_dir, subsets=jsut.available_subsets).collect_files()
+        in_dir, subsets=subsets).collect_files()
     wav_paths = jsut.WavFileDataSource(
-        in_dir, subsets=jsut.available_subsets).collect_files()
+        in_dir, subsets=subsets).collect_files()
 
     err = 0
     tagger = MeCab.Tagger("-Oyomi")
@@ -46,7 +46,7 @@ if __name__ == "__main__":
 
             if hasNumbers(yomi):
                 err += 1
-                print(idx, wav_path, yomi)
+                print(idx, wav_path, text, yomi)
 
         # Insert short pose
         for c in [",", "、", ".", "。"]:
