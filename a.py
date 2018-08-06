@@ -56,6 +56,25 @@ if __name__ == "__main__":
         for c in ["「", "」", "『", "』", "・"]:
             yomi = yomi.replace(c, "")
 
+        if False:
+            from pyopenjtalk import openjtalk
+            prons, labels, params = openjtalk(text)
+            phones = []
+            for label in labels:
+                phone = label.split()[2].split("-")[1].split("+")[0]
+                if phone == "sil":
+                    continue
+                elif phone == "pau":
+                    phone = "sp"
+                phones.append(phone)
+            yomi = " ".join(phones).lower()
+
+            spe = {"by a": "b y a", "v e": "b e",
+                   "v u": "b u", "cl": "q", "y e": "i e"}
+            for k, v in spe.items():
+                if k in yomi:
+                    yomi = yomi.replace(k, v)
+
         # Write to file
         name = splitext(basename(wav_path))[0]
         with open(join(dst_dir, name + ".txt"), "w") as f:
