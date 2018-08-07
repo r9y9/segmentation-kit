@@ -29,6 +29,7 @@ if __name__ == "__main__":
     for idx in trange(len(transcriptions)):
         text = transcriptions[idx]
         wav_path = wav_paths[idx]
+        name = splitext(basename(wav_path))[0]
 
         # Get yomi from normalized text
         yomi = jaconv.normalize(text)
@@ -75,8 +76,11 @@ if __name__ == "__main__":
                 if k in yomi:
                     yomi = yomi.replace(k, v)
 
+            with open(join(dst_dir, name + ".openjtalk.lab"), "w") as f:
+                for l in labels:
+                    f.write("{}\n".format(l))
+
         # Write to file
-        name = splitext(basename(wav_path))[0]
         with open(join(dst_dir, name + ".txt"), "w") as f:
             f.write(yomi)
 
