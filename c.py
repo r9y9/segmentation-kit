@@ -35,5 +35,11 @@ if __name__ == "__main__":
                 with open(join(dst_dir, name + ".txt")) as ff:
                     print(idx, label_path, text, ff.readlines())
                 c += 1
+            else:
+                openjtalk_label_path = join(dst_dir, name + ".openjtalk.lab")
+                with open(openjtalk_label_path) as of:
+                    jlines = of.readlines()
+                    if len(lines) != len(jlines):
+                        print("Somethihng vad!")
 
     print("Failed number of utterances:", c)
