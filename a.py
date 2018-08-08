@@ -8,7 +8,7 @@ import sys
 from nnmnkwii.datasets import jsut
 from os.path import join, splitext, basename
 from tqdm import trange
-from pyopenjtalk import openjtalk
+from pyopenjtalk import OpenJTalk
 
 
 def hasNumbers(inputString):
@@ -23,6 +23,8 @@ if __name__ == "__main__":
     wav_paths = jsut.WavFileDataSource(
         in_dir, subsets=subsets).collect_files()
 
+    jtalk = OpenJTalk()
+
     os.makedirs(dst_dir, exist_ok=True)
     for idx in trange(len(transcriptions)):
         text = transcriptions[idx]
@@ -30,10 +32,10 @@ if __name__ == "__main__":
         name = splitext(basename(wav_path))[0]
 
         # Run openjtalk
-        prons, labels, params = openjtalk(text)
+        njd_results, labels = jtalk.run_frontend(text)
         phones = []
         for label in labels:
-            phone = label.split()[2].split("-")[1].split("+")[0]
+            phone = label.split("-")[1].split("+")[0]
             if phone == "sil":
                 continue
             elif phone == "pau":
