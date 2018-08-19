@@ -16,12 +16,13 @@ def hasNumbers(inputString):
 
 
 if __name__ == "__main__":
-    from params import in_dir, dst_dir, subsets
+    from params import in_dir, dst_dir
+    from params import dataset, dataset_wav_kwargs, dataset_script_kwargs
 
-    transcriptions = jsut.TranscriptionDataSource(
-        in_dir, subsets=subsets).collect_files()
-    wav_paths = jsut.WavFileDataSource(
-        in_dir, subsets=subsets).collect_files()
+    transcriptions = dataset.TranscriptionDataSource(
+        in_dir, **dataset_script_kwargs).collect_files()
+    wav_paths = dataset.WavFileDataSource(
+        in_dir, **dataset_wav_kwargs).collect_files()
 
     c = 0
     os.makedirs(dst_dir, exist_ok=True)
