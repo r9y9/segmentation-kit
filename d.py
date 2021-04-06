@@ -1,12 +1,13 @@
 # coding: utf-8
 
-import numpy as np
 import os
-from nnmnkwii.datasets import jsut
-from os.path import join, exists, splitext, basename
-from tqdm import trange
-from shutil import copyfile
 import sys
+from os.path import basename, exists, join, splitext
+from shutil import copyfile
+
+import numpy as np
+from nnmnkwii.datasets import jsut
+from tqdm import trange
 
 
 def wavesurfer_to_hts(lab_path, openjtalk_lab_path):
@@ -27,12 +28,9 @@ def wavesurfer_to_hts(lab_path, openjtalk_lab_path):
 
 
 if __name__ == "__main__":
-    from params import in_dir, dst_dir, subsets
+    from params import dst_dir, in_dir, subsets
 
-    transcriptions = jsut.TranscriptionDataSource(
-        in_dir, subsets=subsets).collect_files()
-    wav_paths = jsut.WavFileDataSource(
-        in_dir, subsets=subsets).collect_files()
+    wav_paths = jsut.WavFileDataSource(in_dir, subsets=subsets).collect_files()
 
     for subset in subsets:
         wav_paths = jsut.WavFileDataSource(in_dir, subsets=[subset]).collect_files()

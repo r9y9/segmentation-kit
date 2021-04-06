@@ -1,5 +1,6 @@
 # coding: utf-8
-from os.path import join, expanduser
+from os.path import expanduser, join
+
 from nnmnkwii.datasets import jsut
 
 in_dir = join(expanduser("~"), "data/jsut_ver1.1")
